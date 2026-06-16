@@ -13,6 +13,7 @@ const {
 const { saveMessage } = require('~/models');
 const responses = require('./responses');
 const openai = require('./openai');
+const evaluations = require('./eval');
 const { v1 } = require('./v1');
 const chat = require('./chat');
 
@@ -32,6 +33,14 @@ const router = express.Router();
  * @see https://openresponses.org/specification
  */
 router.use('/v1/responses', responses);
+
+/**
+ * Agent evaluation route (admin agent-API-key auth handled in route file).
+ * Mounted at /agents/v1/evaluations (full path: /api/agents/v1/evaluations).
+ * NOTE: Must be mounted BEFORE /v1 to avoid being caught by the less specific
+ * OpenAI-compatible route.
+ */
+router.use('/v1/evaluations', evaluations);
 
 /**
  * OpenAI-compatible API routes (API key authentication handled in route file)
